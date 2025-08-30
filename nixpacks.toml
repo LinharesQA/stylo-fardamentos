@@ -6,7 +6,7 @@ NODE_ENV = "production"
 cmd = "npm install && npm run build"
 
 [start]
-cmd = "npx http-server dist -p $PORT -a 0.0.0.0 --cors -c-1 --proxy http://localhost:$PORT?"
+cmd = "node server.js"
 
 [phases.install]
 dependsOn = []
