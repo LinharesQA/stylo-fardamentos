@@ -23,7 +23,12 @@ export const useScrollReveal = () => {
 
     observer.observe(element);
 
-    return () => observer.disconnect();
+    return () => {
+      if (element) {
+        observer.unobserve(element);
+      }
+      observer.disconnect();
+    };
   }, []);
 
   return elementRef;

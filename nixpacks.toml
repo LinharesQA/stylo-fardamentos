@@ -1,0 +1,17 @@
+[variables]
+NODE_VERSION = "18"
+NODE_ENV = "production"
+
+[build]
+cmd = "npm ci && npm run build"
+
+[start]
+cmd = "npx serve -s dist -l $PORT"
+
+[phases.install]
+dependsOn = []
+cmds = ["npm ci"]
+
+[phases.build]
+dependsOn = ["install"]
+cmds = ["npm run build"]
