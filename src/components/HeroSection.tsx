@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Star } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import heroImage from "@/assets/hero-bg.jpg";
 
 export const HeroSection = () => {
   const heroRef = useScrollReveal();
+  const { trackCTAClick } = useAnalytics();
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -59,7 +61,10 @@ export const HeroSection = () => {
               <Button 
                 size="lg" 
                 className="bg-gradient-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 py-6 text-lg btn-glow group"
-                onClick={() => scrollToSection('contato')}
+                onClick={() => {
+                  trackCTAClick('Peça um Orçamento Agora', 'hero_section');
+                  scrollToSection('contato');
+                }}
               >
                 Peça um Orçamento Agora
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -69,7 +74,10 @@ export const HeroSection = () => {
                 variant="outline" 
                 size="lg"
                 className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm px-8 py-6 text-lg"
-                onClick={() => scrollToSection('servicos')}
+                onClick={() => {
+                  trackCTAClick('Ver Nossos Serviços', 'hero_section');
+                  scrollToSection('servicos');
+                }}
               >
                 Ver Nossos Serviços
               </Button>

@@ -7,12 +7,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
+import { useAnalytics } from "@/hooks/useAnalytics";
 import { Send, Phone, Mail, MapPin, Clock } from "lucide-react";
 
 export const ContactSection = () => {
   const sectionRef = useScrollReveal();
   const formRef = useScrollReveal();
   const { toast } = useToast();
+  const { trackFormSubmission, trackPhoneClick, trackEmailClick } = useAnalytics();
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -29,6 +31,13 @@ export const ContactSection = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Track conversion event
+    trackFormSubmission('contact_form', {
+      product_type: formData.produto,
+      quantity: formData.quantidade,
+      form_location: 'contact_section'
+    });
     
     // Simulate form submission
     toast({
@@ -72,7 +81,12 @@ export const ContactSection = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Telefone</h3>
-                      <p className="text-muted-foreground">(11) 99999-9999</p>
+                      <button 
+                        onClick={() => trackPhoneClick('contact_section')}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        (11) 99999-9999
+                      </button>
                       <p className="text-sm text-muted-foreground">WhatsApp disponível 24h</p>
                     </div>
                   </div>
@@ -87,7 +101,12 @@ export const ContactSection = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">E-mail</h3>
-                      <p className="text-muted-foreground">contato@stylo.com.br</p>
+                      <button 
+                        onClick={() => trackEmailClick('contact_section')}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        contato@stylo.com.br
+                      </button>
                       <p className="text-sm text-muted-foreground">Resposta em até 2h</p>
                     </div>
                   </div>

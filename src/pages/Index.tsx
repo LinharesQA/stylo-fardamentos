@@ -7,8 +7,12 @@ import { ProdutosServicosSection } from "@/components/ProdutosServicosSection";
 import { FAQSection } from "@/components/FAQSection";
 import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 const Index = () => {
+  // Initialize analytics tracking
+  useAnalytics();
+
   return (
     <div className="min-h-screen">
       <Navbar />
