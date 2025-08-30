@@ -5,9 +5,11 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SecureForm } from "@/components/ui/secure-form";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useToast } from "@/hooks/use-toast";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { useSanitize } from "@/lib/sanitize";
 import { Send, Phone, Mail, MapPin, Clock } from "lucide-react";
 
 export const ContactSection = () => {
@@ -15,6 +17,7 @@ export const ContactSection = () => {
   const formRef = useScrollReveal();
   const { toast } = useToast();
   const { trackFormSubmission, trackPhoneClick, trackEmailClick } = useAnalytics();
+  const { sanitizeFormData, isValidEmail, isValidPhone } = useSanitize();
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -29,31 +32,50 @@ export const ContactSection = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Track conversion event
-    trackFormSubmission('contact_form', {
-      product_type: formData.produto,
-      quantity: formData.quantidade,
-      form_location: 'contact_section'
-    });
-    
-    // Simulate form submission
-    toast({
-      title: "Orçamento Solicitado!",
-      description: "Recebemos sua solicitação e entraremos em contato em breve.",
-    });
+  const handleSecureSubmit = async (sanitizedData: Record<string, any>) => {
+    try {
+      // Send to API endpoint
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sanitizedData)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+      
+      // Track conversion event
+      trackFormSubmission('contact_form', {
+        product_type: sanitizedData.produto,
+        quantity: sanitizedData.quantidade,
+        form_location: 'contact_section'
+      });
+      
+      toast({
+        title: "Orçamento Solicitado!",
+        description: "Recebemos sua solicitação e entraremos em contato em breve.",
+      });
 
-    // Reset form
-    setFormData({
-      nome: '',
-      telefone: '',
-      email: '',
-      produto: '',
-      quantidade: '',
-      detalhes: ''
-    });
+      // Reset form
+      setFormData({
+        nome: '',
+        telefone: '',
+        email: '',
+        produto: '',
+        quantidade: '',
+        detalhes: ''
+      });
+      
+    } catch (error) {
+      toast({
+        title: "Erro ao enviar",
+        description: "Ocorreu um erro ao enviar sua solicitação. Tente novamente.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -154,7 +176,7 @@ export const ContactSection = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <SecureForm onSubmit={handleSecureSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="nome" className="text-primary-foreground font-medium">
@@ -162,6 +184,7 @@ export const ContactSection = () => {
                       </Label>
                       <Input
                         id="nome"
+                        name="nome"
                         value={formData.nome}
                         onChange={(e) => handleInputChange('nome', e.target.value)}
                         required
@@ -175,6 +198,7 @@ export const ContactSection = () => {
                       </Label>
                       <Input
                         id="telefone"
+                        name="telefone"
                         value={formData.telefone}
                         onChange={(e) => handleInputChange('telefone', e.target.value)}
                         required
@@ -190,6 +214,7 @@ export const ContactSection = () => {
                     </Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
@@ -204,7 +229,7 @@ export const ContactSection = () => {
                       <Label className="text-primary-foreground font-medium">
                         Tipo de Produto *
                       </Label>
-                      <Select value={formData.produto} onValueChange={(value) => handleInputChange('produto', value)}>
+                      <Select name="produto" value={formData.produto} onValueChange={(value) => handleInputChange('produto', value)}>
                         <SelectTrigger className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground">
                           <SelectValue placeholder="Selecione o tipo" />
                         </SelectTrigger>
@@ -219,7 +244,7 @@ export const ContactSection = () => {
                       <Label className="text-primary-foreground font-medium">
                         Quantidade *
                       </Label>
-                      <Select value={formData.quantidade} onValueChange={(value) => handleInputChange('quantidade', value)}>
+                      <Select name="quantidade" value={formData.quantidade} onValueChange={(value) => handleInputChange('quantidade', value)}>
                         <SelectTrigger className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground">
                           <SelectValue placeholder="Selecione a quantidade" />
                         </SelectTrigger>
@@ -240,6 +265,7 @@ export const ContactSection = () => {
                     </Label>
                     <Textarea
                       id="detalhes"
+                      name="detalhes"
                       value={formData.detalhes}
                       onChange={(e) => handleInputChange('detalhes', e.target.value)}
                       rows={4}
@@ -256,7 +282,7 @@ export const ContactSection = () => {
                     Enviar Solicitação
                     <Send className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Button>
-                </form>
+                </SecureForm>
 
                 <div className="text-center pt-4 border-t border-primary-foreground/20">
                   <p className="text-primary-foreground/80 text-sm">
