@@ -6,7 +6,7 @@ NODE_ENV = "production"
 cmd = "npm install && npm run build"
 
 [start]
-cmd = "npx serve -s dist -l $PORT"
+cmd = "npx serve -c serve.json -p $PORT"
 
 [phases.install]
 dependsOn = []
