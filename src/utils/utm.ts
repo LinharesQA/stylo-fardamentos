@@ -73,7 +73,10 @@ export class UTMManager {
       try {
         return JSON.parse(sessionData);
       } catch (e) {
-        console.warn('Error parsing session UTM data:', e);
+        // Only log in development to avoid console exposure
+        if (import.meta.env.DEV) {
+          console.warn('Error parsing session UTM data:', e);
+        }
       }
     }
 
@@ -93,7 +96,10 @@ export class UTMManager {
           localStorage.removeItem(this.PERSISTENT_KEY);
         }
       } catch (e) {
-        console.warn('Error parsing persistent UTM data:', e);
+        // Only log in development to avoid console exposure
+        if (import.meta.env.DEV) {
+          console.warn('Error parsing persistent UTM data:', e);
+        }
       }
     }
 

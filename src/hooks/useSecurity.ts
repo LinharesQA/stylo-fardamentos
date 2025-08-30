@@ -71,8 +71,10 @@ export const useSecurity = (): SecurityHookReturn => {
     
     securityLog.push(report);
     
-    // In production, you would send this to your security monitoring service
-    console.warn('Security Issue Reported:', report);
+    // In production, only log to server - avoid console exposure
+    if (import.meta.env.DEV) {
+      console.warn('Security Issue Reported:', report);
+    }
     
     // Store locally for debugging (limit to last 100 entries)
     const stored = localStorage.getItem('security_log') || '[]';
