@@ -38,7 +38,7 @@ export const CookieConsent = () => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
-      <div className="fixed bottom-0 left-0 right-0 p-4 md:bottom-6 md:left-6 md:right-auto md:max-w-md">
+      <div className="fixed bottom-0 left-0 right-0 p-4 md:bottom-6 md:left-1/2 md:transform md:-translate-x-1/2 md:max-w-md">
         <Card className="shadow-xl border-2 border-primary/20">
           <CardContent className="p-6">
             <div className="flex items-start justify-between mb-4">
