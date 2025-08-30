@@ -185,6 +185,7 @@ export const ContactSection = () => {
                       <Input
                         id="nome"
                         name="nome"
+                        autoComplete="name"
                         value={formData.nome}
                         onChange={(e) => handleInputChange('nome', e.target.value)}
                         required
@@ -199,6 +200,8 @@ export const ContactSection = () => {
                       <Input
                         id="telefone"
                         name="telefone"
+                        type="tel"
+                        autoComplete="tel"
                         value={formData.telefone}
                         onChange={(e) => handleInputChange('telefone', e.target.value)}
                         required
@@ -216,6 +219,7 @@ export const ContactSection = () => {
                       id="email"
                       name="email"
                       type="email"
+                      autoComplete="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       required
@@ -226,7 +230,7 @@ export const ContactSection = () => {
 
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label className="text-primary-foreground font-medium">
+                      <Label htmlFor="produto" className="text-primary-foreground font-medium">
                         Tipo de Produto *
                       </Label>
                       <Select name="produto" value={formData.produto} onValueChange={(value) => handleInputChange('produto', value)}>
@@ -241,7 +245,7 @@ export const ContactSection = () => {
                       </Select>
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-primary-foreground font-medium">
+                      <Label htmlFor="quantidade" className="text-primary-foreground font-medium">
                         Quantidade *
                       </Label>
                       <Select name="quantidade" value={formData.quantidade} onValueChange={(value) => handleInputChange('quantidade', value)}>

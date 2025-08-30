@@ -16,11 +16,11 @@ export const WhatsAppButton = () => {
   return (
     <button
       onClick={handleWhatsAppClick}
-      className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#20BA5A] text-white p-4 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 group"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 bg-[#25D366] hover:bg-[#20BA5A] active:bg-[#1DA851] text-white p-3 sm:p-4 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 group min-h-[48px] min-w-[48px] touch-manipulation"
       aria-label="Entrar em contato via WhatsApp"
     >
       <svg 
-        className="w-7 h-7 group-hover:scale-110 transition-transform" 
+        className="w-6 h-6 sm:w-7 sm:h-7 group-hover:scale-110 transition-transform" 
         fill="currentColor" 
         viewBox="0 0 24 24"
       >

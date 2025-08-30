@@ -33,47 +33,47 @@ export const HeroSection = () => {
           {/* Left Content */}
           <div ref={heroRef} className="text-center lg:text-left animate-slide-right">
             <div className="flex items-center justify-center lg:justify-start mb-6">
-            <div className="flex items-center space-x-1 bg-white/20 rounded-full px-4 py-2 backdrop-blur-sm">
-              <Star className="w-4 h-4 text-secondary fill-current" />
-              <Star className="w-4 h-4 text-secondary fill-current" />
-              <Star className="w-4 h-4 text-secondary fill-current" />
-              <Star className="w-4 h-4 text-secondary fill-current" />
-              <Star className="w-4 h-4 text-secondary fill-current" />
-              <span className="ml-2 text-sm font-semibold text-white">
+            <div className="flex items-center space-x-1 bg-white/20 rounded-full px-3 sm:px-4 py-2 backdrop-blur-sm">
+              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-secondary fill-current" />
+              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-secondary fill-current" />
+              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-secondary fill-current" />
+              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-secondary fill-current" />
+              <Star className="w-3 h-3 sm:w-4 sm:h-4 text-secondary fill-current" />
+              <span className="ml-1 sm:ml-2 text-xs sm:text-sm font-semibold text-white">
                 +500 Clientes Satisfeitos
               </span>
             </div>
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight">
               Fardamentos
               <span className="block text-secondary">Personalizados,</span>
-              <span className="text-3xl md:text-4xl lg:text-5xl block mt-2">
+              <span className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl block mt-2">
                 feitos sob medida para sua Empresa
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl mb-8 text-white/90 leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl mb-8 text-white/90 leading-relaxed">
               Estilo, conforto e qualidade em cada peça, com entrega rápida.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Button 
                 size="lg" 
-                className="bg-gradient-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 py-6 text-lg btn-glow group"
+                className="bg-gradient-primary hover:bg-primary-dark text-primary-foreground font-semibold px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg btn-glow group min-h-[48px] touch-manipulation"
                 onClick={() => {
                   trackCTAClick('Peça um Orçamento Agora', 'hero_section');
                   scrollToSection('contato');
                 }}
               >
                 Peça um Orçamento Agora
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
               
               <Button 
                 variant="outline" 
                 size="lg"
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm px-8 py-6 text-lg"
+                className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm px-6 sm:px-8 py-4 sm:py-6 text-base sm:text-lg min-h-[48px] touch-manipulation"
                 onClick={() => {
                   trackCTAClick('Ver Nossos Serviços', 'hero_section');
                   scrollToSection('servicos');
@@ -84,18 +84,18 @@ export const HeroSection = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/20">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mt-12 pt-8 border-t border-white/20">
               <div className="text-center">
-                <div className="text-3xl font-bold text-secondary mb-1">3+</div>
-                <div className="text-sm text-white/80">Anos no Mercado</div>
+                <div className="text-2xl sm:text-3xl font-bold text-secondary mb-1">3+</div>
+                <div className="text-xs sm:text-sm text-white/80">Anos no Mercado</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-secondary mb-1">500+</div>
-                <div className="text-sm text-white/80">Clientes Atendidos</div>
+                <div className="text-2xl sm:text-3xl font-bold text-secondary mb-1">500+</div>
+                <div className="text-xs sm:text-sm text-white/80">Clientes Atendidos</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-secondary mb-1">24h</div>
-                <div className="text-sm text-white/80">Entrega Expressa</div>
+                <div className="text-2xl sm:text-3xl font-bold text-secondary mb-1">24h</div>
+                <div className="text-xs sm:text-sm text-white/80">Entrega Expressa</div>
               </div>
             </div>
           </div>
