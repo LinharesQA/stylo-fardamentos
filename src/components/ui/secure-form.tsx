@@ -16,7 +16,7 @@ export const SecureForm: React.FC<SecureFormProps> = ({
   endpoint = '/api/contact',
   className = ''
 }) => {
-  const { sanitizeAndValidate, checkRateLimit, reportSecurityIssue } = useSecurity();
+  const { sanitizeAndValidate, reportSecurityIssue } = useSecurity();
   const [errors, setErrors] = React.useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
@@ -26,13 +26,6 @@ export const SecureForm: React.FC<SecureFormProps> = ({
     setIsSubmitting(true);
 
     try {
-      // Check rate limiting
-      if (!checkRateLimit(endpoint)) {
-        setErrors(['Too many requests. Please wait before submitting again.']);
-        reportSecurityIssue('Rate limit exceeded', { endpoint });
-        return;
-      }
-
       // Extract form data
       const formData = new FormData(e.currentTarget);
       const data: Record<string, any> = {};

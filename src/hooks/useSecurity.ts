@@ -4,16 +4,8 @@ import { useSanitize } from '@/lib/sanitize';
 interface SecurityHookReturn {
   isSecureInput: (input: string) => boolean;
   sanitizeAndValidate: (data: Record<string, any>) => { isValid: boolean; sanitized: Record<string, any>; errors: string[] };
-  checkRateLimit: (endpoint: string) => boolean;
   reportSecurityIssue: (issue: string, context?: any) => void;
 }
-
-const RATE_LIMIT_STORAGE_KEY = 'security_rate_limit';
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000; // 15 minutes
-const MAX_ATTEMPTS = {
-  '/api/contact': 5,
-  default: 20
-};
 
 export const useSecurity = (): SecurityHookReturn => {
   const { sanitizeFormData, isValidEmail, isValidPhone } = useSanitize();
@@ -33,40 +25,6 @@ export const useSecurity = (): SecurityHookReturn => {
     
     return !xssPatterns.some(pattern => pattern.test(input));
   }, []);
-
-  const getRateLimitKey = useCallback((endpoint: string): string => {
-    return `${RATE_LIMIT_STORAGE_KEY}_${endpoint}`;
-  }, []);
-
-  const checkRateLimit = useCallback((endpoint: string): boolean => {
-    const now = Date.now();
-    const key = getRateLimitKey(endpoint);
-    const stored = localStorage.getItem(key);
-    
-    let attempts: number[] = [];
-    if (stored) {
-      try {
-        attempts = JSON.parse(stored).filter((timestamp: number) => 
-          now - timestamp < RATE_LIMIT_WINDOW
-        );
-      } catch (e) {
-        // Invalid stored data, start fresh
-        attempts = [];
-      }
-    }
-    
-    const maxAttempts = MAX_ATTEMPTS[endpoint as keyof typeof MAX_ATTEMPTS] || MAX_ATTEMPTS.default;
-    
-    if (attempts.length >= maxAttempts) {
-      return false; // Rate limit exceeded
-    }
-    
-    // Add current attempt
-    attempts.push(now);
-    localStorage.setItem(key, JSON.stringify(attempts));
-    
-    return true;
-  }, [getRateLimitKey]);
 
   const sanitizeAndValidate = useCallback((data: Record<string, any>) => {
     const errors: string[] = [];
@@ -137,7 +95,6 @@ export const useSecurity = (): SecurityHookReturn => {
   return {
     isSecureInput,
     sanitizeAndValidate,
-    checkRateLimit,
     reportSecurityIssue
   };
 };

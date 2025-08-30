@@ -2,7 +2,6 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
 import compression from 'compression';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -49,24 +48,6 @@ app.use(helmet({
     }
 }));
 
-// Rate limiting
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
-});
-
-const formLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // limit form submissions to 5 per windowMs
-    message: 'Too many form submissions from this IP, please try again later.',
-    skip: (req) => req.method !== 'POST',
-    standardHeaders: true,
-    legacyHeaders: false,
-});
-
 // Security logging middleware
 app.use((req, res, next) => {
     const now = new Date().toISOString();
@@ -101,9 +82,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(limiter);
-app.use('/api', formLimiter);
-
 // Parse JSON bodies
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -122,7 +100,7 @@ app.use(express.static(path.join(__dirname, 'dist'), {
 }));
 
 // API endpoint for form submissions with enhanced security
-app.post('/api/contact', formLimiter, (req, res) => {
+app.post('/api/contact', (req, res) => {
     const { nome, telefone, email, produto, quantidade, detalhes } = req.body;
     
     // Basic validation
