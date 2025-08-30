@@ -32,7 +32,7 @@ export const ContactSection = () => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSecureSubmit = async (sanitizedData: Record<string, any>) => {
+  const handleSecureSubmit = async (sanitizedData: Record<string, unknown>) => {
     try {
       // Send to API endpoint
       const response = await fetch('/api/contact', {

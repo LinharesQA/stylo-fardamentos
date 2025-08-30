@@ -1,9 +1,9 @@
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
-    fbq: (...args: any[]) => void;
-    _fbq: any;
+    dataLayer: unknown[];
+    gtag: (...args: unknown[]) => void;
+    fbq: (...args: unknown[]) => void;
+    _fbq: unknown;
   }
 }
 
@@ -21,8 +21,8 @@ export interface ConversionEvent {
   event_name: string;
   currency?: string;
   value?: number;
-  items?: any[];
-  [key: string]: any;
+  items?: unknown[];
+  [key: string]: unknown;
 }
 
 class Analytics {
@@ -100,7 +100,7 @@ class Analytics {
       // Initialize dataLayer
       window.dataLayer = window.dataLayer || [];
       window.gtag = function() {
-        window.dataLayer.push(arguments);
+        window.dataLayer.push(Array.from(arguments));
       };
 
       // Load gtag script
@@ -140,7 +140,7 @@ class Analytics {
 
       // Facebook Pixel Code
       const fbq = window.fbq = window.fbq || function() {
-        (window.fbq.q = window.fbq.q || []).push(arguments);
+        (window.fbq.q = window.fbq.q || []).push(Array.from(arguments));
       };
       
       if (!window._fbq) window._fbq = fbq;
@@ -233,7 +233,7 @@ class Analytics {
     }
   }
 
-  trackEvent(eventName: string, parameters: Record<string, any> = {}): void {
+  trackEvent(eventName: string, parameters: Record<string, unknown> = {}): void {
     if (!this.isEnabled) return;
 
     const eventData = {
@@ -288,7 +288,7 @@ class Analytics {
   }
 
   // Predefined conversion events
-  trackFormSubmission(formName: string, formData?: Record<string, any>): void {
+  trackFormSubmission(formName: string, formData?: Record<string, unknown>): void {
     this.trackConversion({
       event_name: 'generate_lead',
       currency: 'BRL',

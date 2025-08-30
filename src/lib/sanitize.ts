@@ -43,8 +43,8 @@ class Sanitizer {
     });
   }
 
-  static sanitizeFormData(data: Record<string, any>): Record<string, any> {
-    const sanitized: Record<string, any> = {};
+  static sanitizeFormData(data: Record<string, unknown>): Record<string, unknown> {
+    const sanitized: Record<string, unknown> = {};
     
     for (const [key, value] of Object.entries(data)) {
       if (typeof value === 'string') {
@@ -69,7 +69,7 @@ class Sanitizer {
 
   static isValidPhone(phone: string): boolean {
     const sanitized = this.sanitizeText(phone);
-    const phoneRegex = /^[\d\s\-\(\)\+]{10,}$/;
+    const phoneRegex = /^[\d\s\-()\+]{10,}$/;
     return phoneRegex.test(sanitized);
   }
 
@@ -101,7 +101,7 @@ export const useSanitize = () => {
     return Sanitizer.sanitizeText(content);
   };
 
-  const sanitizeFormData = (data: Record<string, any>) => {
+  const sanitizeFormData = (data: Record<string, unknown>) => {
     return Sanitizer.sanitizeFormData(data);
   };
 
