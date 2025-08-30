@@ -21,6 +21,17 @@ export const CookieConsent = () => {
 
   const handleAcceptAll = () => {
     analytics.setConsent(true);
+    
+    // Update consent mode for ads
+    if (typeof window.gtag !== 'undefined') {
+      window.gtag('consent', 'update', {
+        analytics_storage: 'granted',
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted'
+      });
+    }
+    
     setShowConsent(false);
   };
 
@@ -31,6 +42,17 @@ export const CookieConsent = () => {
 
   const handleAcceptNecessary = () => {
     analytics.setConsent(false);
+    
+    // Keep consent denied for ads
+    if (typeof window.gtag !== 'undefined') {
+      window.gtag('consent', 'update', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
+      });
+    }
+    
     setShowConsent(false);
   };
 
@@ -117,8 +139,10 @@ export const CookieConsent = () => {
                     </p>
                     <div className="space-y-1 text-xs text-muted-foreground">
                       <div>• Google Analytics (Anonimizado)</div>
+                      <div>• Google Ads (Conversões)</div>
+                      <div>• Facebook Pixel (Remarketing)</div>
                       <div>• Métricas de performance</div>
-                      <div>• Análise de conversões</div>
+                      <div>• Análise de campanhas publicitárias</div>
                     </div>
                   </div>
                 </div>
